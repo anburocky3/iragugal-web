@@ -81,6 +81,12 @@ isLoaded.value = true;
             <tr>
               <th
                 scope="col"
+                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 w-10"
+              >
+                ID
+              </th>
+              <th
+                scope="col"
                 class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
               >
                 Name
@@ -115,7 +121,12 @@ isLoaded.value = true;
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
-            <tr v-for="person in data" :key="person.email">
+            <tr v-for="(person, index) in data" :key="person.email">
+              <td
+                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6"
+              >
+                #{{ index + 1 }}
+              </td>
               <td
                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6"
               >
@@ -126,7 +137,10 @@ isLoaded.value = true;
                 <div class="font-medium">{{ person.waNumber }}</div>
                 <div class="mt-2">{{ person.email }}</div>
               </td>
-              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
+              <td
+                class="whitespace-nowrap px-3 py-4 text-sm text-gray-800"
+                :title="person.communicationAddress"
+              >
                 <div class="font-medium">
                   {{ person.currentLocation }}
                 </div>

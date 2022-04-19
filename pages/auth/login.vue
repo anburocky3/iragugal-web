@@ -25,8 +25,8 @@ const { errors, handleSubmit, meta, isSubmitting } = useForm({
 const { value: email } = useField<string>("email");
 const { value: password } = useField<string>("password");
 
-email.value = "anbuceo@gmail.com";
-password.value = "123456789";
+// email.value = "anbuceo@gmail.com";
+// password.value = "123456789";
 
 const onSubmit = handleSubmit(async (values) => {
   const user: UserInfo = await FirebaseDataService.loginUser(
