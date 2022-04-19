@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useGlobalApp } from "~/stores";
 useHead({
   title: "Change with Iragugal - Iragugal.com",
 });
@@ -6,6 +7,8 @@ useHead({
 definePageMeta({
   layout: false,
 });
+
+const globalApp = useGlobalApp();
 </script>
 <template>
   <div
@@ -33,7 +36,7 @@ definePageMeta({
       >
 
       <a
-        href="https://chat.whatsapp.com/8EqivLS16KE4nm0xQxRiWI"
+        :href="globalApp.WAGroup"
         target="_blank"
         class="px-4 py-2 rounded border border-green-600 text-green-600 hover:bg-green-500 hover:text-white"
         >Chat</a

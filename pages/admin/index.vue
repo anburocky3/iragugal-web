@@ -3,6 +3,8 @@ import { reactive, ref } from "vue";
 import { Member } from "~/types";
 import FirebaseDataService from "~/services/FirebaseDataService";
 import { shareWhatsApp } from "~/helpers";
+import { useGlobalApp } from "~/stores";
+
 useHead({
   title: "Iragugal Registrations",
 });
@@ -10,6 +12,8 @@ useHead({
 definePageMeta({
   middleware: "auth",
 });
+
+const globalApp = useGlobalApp();
 
 let isLoaded = ref(false);
 
@@ -52,7 +56,15 @@ isLoaded.value = true;
           <h2 class="text-xl font-semibold">Registrations</h2>
           <p class="text-gray-600">You can find the registration data</p>
         </div>
-        <div>
+        <div class="flex items-center space-x-4">
+          <a
+            :href="globalApp.WAGroup"
+            target="_blank"
+            class="bg-white px-4 py-2 rounded text-green-500 border border-green-500 uppercase font-semibold text-sm tracking-wider hover:bg-green-500 hover:text-white flex items-center"
+          >
+            <IconsWhatsApp />
+            WhatsApp
+          </a>
           <a
             :href="shareWhatsApp()"
             target="_blank"
