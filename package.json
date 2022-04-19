@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "start": "node .output/server/index.mjs"
+  },
+  "devDependencies": {
+    "nuxt3": "^3.0.0-27501460.04a72f8",
+    "vee-validate": "^4.5.11"
+  },
+  "dependencies": {
+    "@nuxtjs/tailwindcss": "5.0.0-4",
+    "@pinia/nuxt": "^0.1.8",
+    "cookie": "^0.5.0",
+    "firebase": "^9.6.11",
+    "js-cookie": "^3.0.1",
+    "pinia": "^2.0.13",
+    "pinia-plugin-persistedstate-2": "^1.0.0",
+    "vue-sweetalert2": "^5.0.2",
+    "yup": "^0.32.11"
+  }
+}
