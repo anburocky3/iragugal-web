@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue';
 import { Member } from '~/types';
 import FirebaseDataService from '~/services/FirebaseDataService';
-import { shareWhatsApp, calculateAge } from '~/helpers';
+import { shareWhatsApp, calculateAge, getMembershipType } from '~/helpers';
 import { useGlobalApp } from '~/stores';
 
 useHead({
@@ -46,6 +46,18 @@ isLoaded.value = true;
 //     role: "Basic",
 //   },
 // ];
+
+const membershipStyling = (membershipInterest: string) => {
+  let general = 'px-4 py-1 rounded-full font-semibold uppercase text-xs ';
+
+  if (membershipInterest === 'Basic') {
+    general += 'bg-green-500 text-white';
+  } else {
+    general += 'bg-blue-500 text-white';
+  }
+
+  return general;
+};
 </script>
 
 <template>
@@ -153,8 +165,12 @@ isLoaded.value = true;
               </td>
               <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 <span
-                  class="bg-green-500 text-white px-4 py-1 rounded-full font-semibold uppercase text-xs"
-                  >BASIC</span
+                  :class="
+                    membershipStyling(
+                      getMembershipType(person.membershipInterest)
+                    )
+                  "
+                  >{{ getMembershipType(person.membershipInterest) }}</span
                 >
               </td>
               <td
@@ -164,7 +180,7 @@ isLoaded.value = true;
                   onclick="alert('Currently Not available, 😉')"
                   class="text-indigo-600 hover:text-indigo-900"
                 >
-                  View<span class="sr-only">, {{ person.name }}</span>
+                  View <span class="sr-only">, {{ person.name }}</span>
                 </button>
               </td>
             </tr>

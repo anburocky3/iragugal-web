@@ -27,3 +27,7 @@ export const calculateAge = (dob: string) => {
   }
   return age;
 };
+
+export const getMembershipType = (membership: string) => {
+  return membership.replace(' Member', '');
+};

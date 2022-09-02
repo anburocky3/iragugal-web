@@ -3,7 +3,7 @@ export interface BaseSelectOptions {
   title: string;
 }
 
-export type MemberRole = "Basic" | "Business";
+export type MemberRole = 'Basic' | 'Business';
 
 export interface Member {
   name: string;
@@ -15,5 +15,6 @@ export interface Member {
   currentLocation: string;
   voteLocation: string;
   interestedIn: string;
+  membershipInterest: string;
   role: MemberRole;
 }
