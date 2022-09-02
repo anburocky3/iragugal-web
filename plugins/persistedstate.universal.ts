@@ -1,4 +1,3 @@
-import { defineNuxtPlugin } from 'nuxt/app';
 import { createPersistedStatePlugin } from 'pinia-plugin-persistedstate-2';
 import Cookies from 'js-cookie';
 import cookie from 'cookie';
