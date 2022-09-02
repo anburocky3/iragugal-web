@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useGlobalApp } from "~/stores";
-import { useAuthStore } from "~~/stores/auth";
-import FirebaseDataService from "~~/services/FirebaseDataService";
-import Swal from "sweetalert2";
+import { useGlobalApp } from '~/stores';
+import { useAuthStore } from '~~/stores/auth';
+import FirebaseDataService from '~~/services/FirebaseDataService';
+import Swal from 'sweetalert2';
 
 const globalApp = useGlobalApp();
 const authStore = useAuthStore();
@@ -12,11 +12,11 @@ const logout = async () => {
 
   authStore.removeAuth();
 
-  navigateTo({ name: "auth-login" });
+  navigateTo({ name: 'auth-login' });
   Swal.fire(
     `Logged out successfully`,
-    "You have been logged out successfully!",
-    "success"
+    'You have been logged out successfully!',
+    'success'
   );
 };
 </script>

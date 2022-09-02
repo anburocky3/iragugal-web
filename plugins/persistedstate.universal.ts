@@ -1,8 +1,9 @@
-import { createPersistedStatePlugin } from "pinia-plugin-persistedstate-2";
-import Cookies from "js-cookie";
-import cookie from "cookie";
+import { defineNuxtPlugin } from 'nuxt/app';
+import { createPersistedStatePlugin } from 'pinia-plugin-persistedstate-2';
+import Cookies from 'js-cookie';
+import cookie from 'cookie';
 
-export default function ({ $pinia, ssrContext }) {
+export default defineNuxtPlugin(({ $pinia, ssrContext }) => {
   $pinia.use(
     createPersistedStatePlugin({
       // plugin options goes here
@@ -23,4 +24,4 @@ export default function ({ $pinia, ssrContext }) {
       },
     })
   );
-}
+});

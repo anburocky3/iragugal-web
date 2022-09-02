@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { User, UserInfo } from "@firebase/auth-types";
-import Swal from "sweetalert2";
-import { useField, useForm } from "vee-validate";
-import * as yup from "yup";
-import FirebaseDataService from "~~/services/FirebaseDataService";
-import { useAuthStore } from "~~/stores/auth";
+import { User, UserInfo } from '@firebase/auth-types';
+import Swal from 'sweetalert2';
+import { useField, useForm } from 'vee-validate';
+import * as yup from 'yup';
+import FirebaseDataService from '~/services/FirebaseDataService';
+import { useAuthStore } from '~/stores/auth';
 
 const authStore = useAuthStore();
 
 useHead({
-  title: "Login with Iragugal",
+  title: 'Login with Iragugal',
 });
 
 const schema = yup.object({
-  email: yup.string().required().email("Proper Email id is required"),
+  email: yup.string().required().email('Proper Email id is required'),
   password: yup.string().required().min(8),
 });
 
@@ -22,8 +22,8 @@ const { errors, handleSubmit, meta, isSubmitting } = useForm({
   validationSchema: schema,
 });
 
-const { value: email } = useField<string>("email");
-const { value: password } = useField<string>("password");
+const { value: email } = useField<string>('email');
+const { value: password } = useField<string>('password');
 
 // email.value = "anbuceo@gmail.com";
 // password.value = "123456789";
@@ -36,8 +36,8 @@ const onSubmit = handleSubmit(async (values) => {
 
   authStore.updateAuth(user);
 
-  navigateTo({ name: "admin" });
-  Swal.fire(`Welcome ${user.displayName}!`, "You are the rockstar!", "success");
+  navigateTo({ name: 'admin' });
+  Swal.fire(`Welcome ${user.displayName}!`, 'You are the rockstar!', 'success');
 });
 </script>
 

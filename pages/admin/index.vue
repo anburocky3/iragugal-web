@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import { Member } from "~/types";
-import FirebaseDataService from "~/services/FirebaseDataService";
-import { shareWhatsApp } from "~/helpers";
-import { useGlobalApp } from "~/stores";
+import { reactive, ref } from 'vue';
+import { Member } from '~/types';
+import FirebaseDataService from '~/services/FirebaseDataService';
+import { shareWhatsApp, calculateAge } from '~/helpers';
+import { useGlobalApp } from '~/stores';
 
 useHead({
-  title: "Iragugal Registrations",
+  title: 'Iragugal Registrations',
 });
 
 definePageMeta({
-  middleware: "auth",
+  middleware: 'auth',
 });
 
 const globalApp = useGlobalApp();
@@ -130,7 +130,9 @@ isLoaded.value = true;
               <td
                 class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6"
               >
-                <div class="font-medium text-base">{{ person.name }}</div>
+                <div class="font-medium text-base">
+                  {{ person.name }} ({{ calculateAge(person.dob) }})
+                </div>
                 <div class="mt-2">S/O {{ person.fatherName }}</div>
               </td>
               <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
