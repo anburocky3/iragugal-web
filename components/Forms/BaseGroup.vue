@@ -1,7 +1,7 @@
 <script setup lang="ts">
 withDefaults(
   defineProps<{
-    for: string;
+    id: string;
     label: string;
     required?: boolean;
   }>(),
@@ -13,7 +13,7 @@ withDefaults(
 
 <template>
   <div>
-    <label :for="for" class="block text-gray-800"
+    <label :for="id" class="block text-gray-800"
       >{{ label }} <span v-if="required" class="text-red-500">*</span></label
     >
     <slot />

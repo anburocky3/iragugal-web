@@ -1,30 +1,32 @@
 <script setup lang="ts">
-import { useGlobalApp } from "~/stores";
-import { useForm, useField } from "vee-validate";
-import * as yup from "yup";
-import { BaseSelectOptions } from "~/types";
-import FirebaseDataService from "~/services/FirebaseDataService";
-import Swal from "sweetalert2";
+import { useGlobalApp } from '~/stores';
+import { useForm, useField } from 'vee-validate';
+import * as yup from 'yup';
+import { BaseSelectOptions } from '~/types';
+import FirebaseDataService from '~/services/FirebaseDataService';
+import { serverTimestamp } from '@firebase/firestore';
+import Swal from 'sweetalert2';
+import firebase from 'firebase/app';
 
 useHead({
-  title: "Become a Iragugal Member",
+  title: 'Become a Iragugal Member',
 });
 
 definePageMeta({
-  middleware: "guest",
+  middleware: 'guest',
 });
 
 const globalApp = useGlobalApp();
 
 const interestedData: BaseSelectOptions[] = [
-  { id: 1, title: "Politics" },
-  { id: 2, title: "Business" },
-  { id: 3, title: "Social Service" },
+  { id: 1, title: 'Politics' },
+  { id: 2, title: 'Business' },
+  { id: 3, title: 'Social Service' },
 ];
 
 const membershipInterestData: BaseSelectOptions[] = [
-  { id: 1, title: "Basic Member" },
-  { id: 2, title: "Volition Member" },
+  { id: 1, title: 'Basic Member' },
+  { id: 2, title: 'Volition Member' },
 ];
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -34,7 +36,7 @@ const schema = yup.object({
   dob: yup.string().required(),
   email: yup.string().required().email(),
   fatherName: yup.string().required().min(4),
-  waNumber: yup.string().matches(phoneRegExp, "Phone number is not valid"),
+  waNumber: yup.string().matches(phoneRegExp, 'Phone number is not valid'),
   communicationAddress: yup.string().required().min(10).max(100),
   currentLocation: yup.string().required().min(4).max(60),
   voteLocation: yup.string().required().min(10),
@@ -47,28 +49,31 @@ const { errors, handleSubmit, meta } = useForm({
   validationSchema: schema,
 });
 
-const { value: name } = useField<string>("name");
-const { value: dob } = useField<string>("dob");
-const { value: email } = useField<string>("email");
-const { value: fatherName } = useField<string>("fatherName");
-const { value: waNumber } = useField<number>("waNumber");
+const { value: name } = useField<string>('name');
+const { value: dob } = useField<string>('dob');
+const { value: email } = useField<string>('email');
+const { value: fatherName } = useField<string>('fatherName');
+const { value: waNumber } = useField<number>('waNumber');
 const { value: communicationAddress } = useField<string>(
-  "communicationAddress"
+  'communicationAddress'
 );
-const { value: currentLocation } = useField<string>("currentLocation");
-const { value: voteLocation } = useField<string>("voteLocation");
-const { value: interestedIn } = useField<string>("interestedIn");
-const { value: membershipInterest } = useField<string>("membershipInterest");
-const { value: agreeTerms } = useField<boolean>("agreeTerms");
+const { value: currentLocation } = useField<string>('currentLocation');
+const { value: voteLocation } = useField<string>('voteLocation');
+const { value: interestedIn } = useField<string>('interestedIn');
+const { value: membershipInterest } = useField<string>('membershipInterest');
+const { value: agreeTerms } = useField<boolean>('agreeTerms');
 
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async (values: Record<string, any>) => {
+  values.createdAt = serverTimestamp();
+  values.updatedAt = serverTimestamp();
+
   await FirebaseDataService.insertRegistration(values);
 
-  navigateTo({ name: "index" });
+  navigateTo({ name: 'index' });
   Swal.fire(
     `Great ${name.value}!`,
-    "Thanks for your interest, your info is recorded. Good luck.",
-    "success"
+    'Thanks for your interest, your info is recorded. Good luck.',
+    'success'
   );
 });
 </script>
@@ -93,7 +98,7 @@ const onSubmit = handleSubmit(async (values) => {
         <div class="space-y-5 my-5">
           <div class="grid grid-cols-4 gap-5">
             <div class="col-span-4 sm:col-span-3">
-              <FormsBaseGroup for="name" label="Full name" required>
+              <FormsBaseGroup id="name" label="Full name" required>
                 <FormsBaseInput
                   id="name"
                   placeholder="Full name"
@@ -103,7 +108,7 @@ const onSubmit = handleSubmit(async (values) => {
               </FormsBaseGroup>
             </div>
             <div class="col-span-4 sm:col-span-1">
-              <FormsBaseGroup for="dob" label="Date of Birth:">
+              <FormsBaseGroup id="dob" label="Date of Birth:">
                 <FormsBaseInput
                   id="dob"
                   type="date"
@@ -114,7 +119,7 @@ const onSubmit = handleSubmit(async (values) => {
               </FormsBaseGroup>
             </div>
             <div class="col-span-4">
-              <FormsBaseGroup for="fatherName" label="Father name:">
+              <FormsBaseGroup id="fatherName" label="Father name:">
                 <FormsBaseInput
                   id="fatherName"
                   placeholder="Father name"
@@ -124,7 +129,7 @@ const onSubmit = handleSubmit(async (values) => {
               </FormsBaseGroup>
             </div>
             <div class="col-span-4 sm:col-span-2">
-              <FormsBaseGroup for="emailAddress" label="Email address:">
+              <FormsBaseGroup id="emailAddress" label="Email address:">
                 <FormsBaseInput
                   id="emailAddress"
                   placeholder="Email Address"
@@ -135,7 +140,7 @@ const onSubmit = handleSubmit(async (values) => {
               </FormsBaseGroup>
             </div>
             <div class="col-span-4 sm:col-span-2">
-              <FormsBaseGroup for="waNumber" label="WhatsApp number:">
+              <FormsBaseGroup id="waNumber" label="WhatsApp number:">
                 <FormsBaseInput
                   id="waNumber"
                   placeholder="+91 9876541235"
@@ -147,7 +152,7 @@ const onSubmit = handleSubmit(async (values) => {
             </div>
             <div class="col-span-4">
               <FormsBaseGroup
-                for="communicationAddress"
+                id="communicationAddress"
                 label="Communication address:"
               >
                 <FormsBaseTextArea
@@ -161,7 +166,7 @@ const onSubmit = handleSubmit(async (values) => {
               </FormsBaseGroup>
             </div>
             <div class="col-span-4 sm:col-span-2">
-              <FormsBaseGroup for="currentLocation" label="Current Location:">
+              <FormsBaseGroup id="currentLocation" label="Current Location:">
                 <FormsBaseInput
                   id="currentLocation"
                   placeholder="Current Location"
@@ -171,7 +176,7 @@ const onSubmit = handleSubmit(async (values) => {
               </FormsBaseGroup>
             </div>
             <div class="col-span-4 sm:col-span-2">
-              <FormsBaseGroup for="voteLocation" label="Vote Location:">
+              <FormsBaseGroup id="voteLocation" label="Vote Location:">
                 <FormsBaseInput
                   id="voteLocation"
                   placeholder="Vote Location"
@@ -181,7 +186,7 @@ const onSubmit = handleSubmit(async (values) => {
               </FormsBaseGroup>
             </div>
             <div class="col-span-2">
-              <FormsBaseGroup for="interestedIn" label="Field of interest">
+              <FormsBaseGroup id="interestedIn" label="Field of interest">
                 <FormsBaseSelect
                   id="interestedIn"
                   v-model="interestedIn"
@@ -192,7 +197,7 @@ const onSubmit = handleSubmit(async (values) => {
             </div>
             <div class="col-span-2">
               <FormsBaseGroup
-                for="membershipInterest"
+                id="membershipInterest"
                 label="Membership interest"
               >
                 <FormsBaseSelect

@@ -17,6 +17,9 @@ const globalApp = useGlobalApp();
 
 let isLoaded = ref(false);
 
+// const res = await FirebaseDataService.updateTimestampField();
+// console.log(res);
+
 const data: Member[] = await FirebaseDataService.getAllRegistrations();
 
 isLoaded.value = true;
@@ -88,104 +91,111 @@ const membershipStyling = (membershipInterest: string) => {
         </div>
       </div>
       <div>
-        <table class="min-w-full divide-y divide-gray-300 border rounded">
-          <thead class="bg-gray-50">
-            <tr>
-              <th
-                scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 w-10"
-              >
-                ID
-              </th>
-              <th
-                scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-              >
-                Name
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Contact Info
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Location
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Interested In
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Membership
-              </th>
-              <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                <span class="sr-only">Edit</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
-            <tr v-for="(person, index) in data" :key="person.email">
-              <td
-                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6"
-              >
-                #{{ index + 1 }}
-              </td>
-              <td
-                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6"
-              >
-                <div class="font-medium text-base">
-                  {{ person.name }} ({{ calculateAge(person.dob) }})
-                </div>
-                <div class="mt-2">S/O {{ person.fatherName }}</div>
-              </td>
-              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
-                <div class="font-medium">{{ person.waNumber }}</div>
-                <div class="mt-2">{{ person.email }}</div>
-              </td>
-              <td
-                class="whitespace-nowrap px-3 py-4 text-sm text-gray-800"
-                :title="person.communicationAddress"
-              >
-                <div class="font-medium">
-                  {{ person.currentLocation }}
-                </div>
-                <div class="mt-2">(Voting: {{ person.voteLocation }})</div>
-              </td>
-              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                {{ person.interestedIn }}
-              </td>
-              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                <span
-                  :class="
-                    membershipStyling(
-                      getMembershipType(person.membershipInterest)
-                    )
-                  "
-                  >{{ getMembershipType(person.membershipInterest) }}</span
+        <ClientOnly>
+          <table class="min-w-full divide-y divide-gray-300 border rounded">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  scope="col"
+                  class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 w-10"
                 >
-              </td>
-              <td
-                class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
-              >
-                <button
-                  onclick="alert('Currently Not available, 😉')"
-                  class="text-indigo-600 hover:text-indigo-900"
+                  ID
+                </th>
+                <th
+                  scope="col"
+                  class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                 >
-                  View <span class="sr-only">, {{ person.name }}</span>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  Name
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Contact Info
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Location
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Interested In
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Membership
+                </th>
+                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                  <span class="sr-only">Edit</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <tr v-for="(person, index) in data" :key="person.email">
+                <td
+                  class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6"
+                >
+                  #{{ index + 1 }}
+                </td>
+                <td
+                  class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6"
+                >
+                  <div
+                    class="font-medium text-base"
+                    :title="`Registered on ${person.createdAt
+                      .toDate()
+                      .toLocaleDateString()}`"
+                  >
+                    {{ person.name }} ({{ calculateAge(person.dob) }})
+                  </div>
+                  <div class="mt-2">S/O {{ person.fatherName }}</div>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-800">
+                  <div class="font-medium">{{ person.waNumber }}</div>
+                  <div class="mt-2">{{ person.email }}</div>
+                </td>
+                <td
+                  class="whitespace-nowrap px-3 py-4 text-sm text-gray-800"
+                  :title="person.communicationAddress"
+                >
+                  <div class="font-medium">
+                    {{ person.currentLocation }}
+                  </div>
+                  <div class="mt-2">(Voting: {{ person.voteLocation }})</div>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.interestedIn }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <span
+                    :class="
+                      membershipStyling(
+                        getMembershipType(person.membershipInterest)
+                      )
+                    "
+                    >{{ getMembershipType(person.membershipInterest) }}</span
+                  >
+                </td>
+                <td
+                  class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
+                >
+                  <button
+                    onclick="alert('Currently Not available, 😉')"
+                    class="text-indigo-600 hover:text-indigo-900"
+                  >
+                    View <span class="sr-only">, {{ person.name }}</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ClientOnly>
       </div>
     </div>
   </div>

@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import Swal from "sweetalert2";
-import { useField, useForm } from "vee-validate";
-import * as yup from "yup";
-import FirebaseDataService from "~~/services/FirebaseDataService";
-import { UserInfo } from "@firebase/auth-types";
+import Swal from 'sweetalert2';
+import { useField, useForm } from 'vee-validate';
+import * as yup from 'yup';
+import FirebaseDataService from '~~/services/FirebaseDataService';
+import { UserInfo } from '@firebase/auth-types';
 
 useHead({
-  title: "Register",
+  title: 'Register',
 });
 
 const schema = yup.object({
   fullName: yup.string().required().min(4).max(120),
-  email: yup.string().required().email("Proper Email id is required"),
+  email: yup.string().required().email('Proper Email id is required'),
   password: yup.string().required().min(8),
 });
 
@@ -20,13 +20,13 @@ const { errors, handleSubmit, meta, isSubmitting } = useForm({
   validationSchema: schema,
 });
 
-const { value: fullName } = useField<string>("fullName");
-const { value: email } = useField<string>("email");
-const { value: password } = useField<string>("password");
+const { value: fullName } = useField<string>('fullName');
+const { value: email } = useField<string>('email');
+const { value: password } = useField<string>('password');
 
-fullName.value = "Anbuselvan";
-email.value = "anbuceo@gmail.com";
-password.value = "123456789";
+fullName.value = 'Anbuselvan';
+email.value = 'anbuceo@gmail.com';
+password.value = '123456789';
 
 const onSubmit = handleSubmit(async (values) => {
   const user: UserInfo = await FirebaseDataService.createUser(
@@ -35,8 +35,8 @@ const onSubmit = handleSubmit(async (values) => {
     values.password
   );
 
-  navigateTo({ name: "admin" });
-  Swal.fire(`Welcome ${user.displayName}!`, "You are the rockstar!", "success");
+  navigateTo({ name: 'admin' });
+  Swal.fire(`Welcome ${user.displayName}!`, 'You are the rockstar!', 'success');
 });
 </script>
 
@@ -47,7 +47,7 @@ const onSubmit = handleSubmit(async (values) => {
       <p class="text-gray-600 text-sm">Register yourself as registered user.</p>
     </div>
     <form class="my-5 space-y-5" @submit.prevent="onSubmit">
-      <FormsBaseGroup for="fullName" label="Full name">
+      <FormsBaseGroup id="fullName" label="Full name">
         <FormsBaseInput
           id="fullName"
           placeholder="Full name"
@@ -56,7 +56,7 @@ const onSubmit = handleSubmit(async (values) => {
         />
       </FormsBaseGroup>
 
-      <FormsBaseGroup for="email" label="Email">
+      <FormsBaseGroup id="email" label="Email">
         <FormsBaseInput
           id="email"
           placeholder="Email Address"
@@ -65,7 +65,7 @@ const onSubmit = handleSubmit(async (values) => {
         />
       </FormsBaseGroup>
 
-      <FormsBaseGroup for="password" label="Password">
+      <FormsBaseGroup id="password" label="Password">
         <FormsBaseInput
           id="password"
           type="password"

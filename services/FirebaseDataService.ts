@@ -1,8 +1,17 @@
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  query,
+  orderBy,
+  updateDoc,
+  doc,
+  serverTimestamp,
+} from 'firebase/firestore';
 import {
   db,
   //  auth
-} from "./firebaseDB";
+} from './firebaseDB';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -11,28 +20,30 @@ import {
   sendEmailVerification,
   User,
   signOut,
-} from "firebase/auth";
-import { fbErrorHandlingMessage } from "~/helpers";
-import Swal from "sweetalert2";
-import { UserInfo } from "@firebase/auth-types";
+} from 'firebase/auth';
+import { fbErrorHandlingMessage } from '~/helpers';
+import Swal from 'sweetalert2';
+import { UserInfo } from '@firebase/auth-types';
 
 class FirebaseDataService {
   async getAllUsers(): Promise<any> {
-    const usersDocs = collection(db, "users");
+    const usersDocs = collection(db, 'users');
     const usersSnapshot = await getDocs(usersDocs);
     const userList = usersSnapshot.docs.map((doc) => doc.data());
     return userList;
   }
 
   async getAllRegistrations(): Promise<any> {
-    const registrationDocs = collection(db, "registrations");
-    const registrationSnapshot = await getDocs(registrationDocs);
+    const registrationDocs = collection(db, 'registrations');
+    const registrationSnapshot = await getDocs(
+      query(registrationDocs, orderBy('createdAt', 'desc'))
+    );
     const registrationList = registrationSnapshot.docs.map((doc) => doc.data());
     return registrationList;
   }
 
   async insertRegistration(data: object): Promise<any> {
-    const docRef = await addDoc(collection(db, "registrations"), data);
+    const docRef = await addDoc(collection(db, 'registrations'), data);
     return docRef;
   }
 
@@ -54,13 +65,13 @@ class FirebaseDataService {
 
       await sendEmailVerification(credential.user);
 
-      console.log("credentials", credential);
+      console.log('credentials', credential);
 
-      alert("Email verification link has been sent to your mail. Verify it.");
+      alert('Email verification link has been sent to your mail. Verify it.');
       return credential.user;
     } catch (err) {
       const errMsg = fbErrorHandlingMessage(err.code);
-      Swal.fire(errMsg, err.message, "error");
+      Swal.fire(errMsg, err.message, 'error');
       throw err;
     }
   }
@@ -76,7 +87,7 @@ class FirebaseDataService {
       return user;
     } catch (err) {
       const errMsg = fbErrorHandlingMessage(err.code);
-      Swal.fire(errMsg, err.message, "error");
+      Swal.fire(errMsg, err.message, 'error');
       throw err;
     }
   }
@@ -86,9 +97,20 @@ class FirebaseDataService {
       await signOut(getAuth());
     } catch (err) {
       const errMsg = fbErrorHandlingMessage(err.code);
-      Swal.fire(errMsg, err.message, "error");
+      Swal.fire(errMsg, err.message, 'error');
       throw err;
     }
+  }
+
+  // TODO: Delete this in next release
+  async updateTimestampField() {
+    const regRef = collection(db, 'registrations');
+    const snapshot = await getDocs(regRef);
+    await Promise.all(
+      snapshot.docs.map((doc) =>
+        updateDoc(doc.ref, { createdAt: serverTimestamp(), updatedAt: null })
+      )
+    );
   }
 }
 

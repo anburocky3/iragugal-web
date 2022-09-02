@@ -1,3 +1,5 @@
+import { Timestamp } from '@firebase/firestore';
+
 export interface BaseSelectOptions {
   id: number;
   title: string;
@@ -17,4 +19,6 @@ export interface Member {
   interestedIn: string;
   membershipInterest: string;
   role: MemberRole;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
 }

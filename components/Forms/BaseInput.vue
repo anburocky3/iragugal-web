@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue']);
 
 withDefaults(
   defineProps<{
@@ -11,12 +11,12 @@ withDefaults(
     helpText?: string;
   }>(),
   {
-    type: "text",
+    type: 'text',
   }
 );
 
 const updateValue = (event) => {
-  emit("update:modelValue", event.target.value);
+  emit('update:modelValue', event.target.value);
 };
 </script>
 

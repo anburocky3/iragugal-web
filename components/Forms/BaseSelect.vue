@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { BaseSelectOptions } from "~/types";
+import { BaseSelectOptions } from '~/types';
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue']);
 
 withDefaults(
   defineProps<{
@@ -15,7 +15,7 @@ withDefaults(
 );
 
 const updateValue = (event) => {
-  emit("update:modelValue", event.target.value);
+  emit('update:modelValue', event.target.value);
 };
 </script>
 
